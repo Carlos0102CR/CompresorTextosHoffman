@@ -14,14 +14,14 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.arbol
             raiz = null;
         }
 
-        public Dictionary<string, string> generarDiccionario(List<Letra> diccFrecuencia)
+        public Dictionary<string, string> generarDiccionario(List<Letra> listaFrecuencia)
         {
             Nodo auxIzq, raizTemp;
             raizTemp = new Nodo();
             bool fin = false;
             Dictionary<string,string> diccHuffman = new Dictionary<string,string>();
 
-            foreach (Letra letraTemp in diccFrecuencia)         //Crea el Arbol
+            foreach (Letra letraTemp in listaFrecuencia)        //Crea el Arbol
             {
                 auxIzq = new Nodo(letraTemp);
                 if (raiz == null) { raiz = auxIzq; }            //verifica si la raiz es null

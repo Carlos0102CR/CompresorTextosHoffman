@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using System.Collections.Generic;
 using HuffmanLib.com.cenfotec.estructuras.huffman.arbol;
 using HuffmanLib.com.cenfotec.estructuras.huffman.letra;
@@ -16,7 +16,7 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.compresor
 
         public string comprimir(string texto)
         {
-            List<Letra> diccFrecuencia;
+            List<Letra> listaFrecuencia;
             Dictionary<string, string> diccHuffman;
             List<string> listaCarctrs = new List<string>();
             List<int> listaFrecs = new List<int>();
@@ -33,9 +33,9 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.compresor
                     listaFrecs.Add(1);
                 }
             }
-            diccFrecuencia = ordenarListas(listaCarctrs, listaFrecs);//ordena las listas de frecuencia en orden ascendente y devuelve una lista de Letras
+            listaFrecuencia = ordenarListas(listaCarctrs, listaFrecs);//ordena las listas de frecuencia en orden ascendente y devuelve una lista de Letras
 
-            diccHuffman = arbol.generarDiccionario(diccFrecuencia);//envia al arbol la lista de frecuencias y devuelve un diccionario con los valores en bits de cada caracter
+            diccHuffman = arbol.generarDiccionario(listaFrecuencia);//envia al arbol la lista de frecuencias y devuelve un diccionario con los valores en bits de cada caracter
 
 
 
@@ -60,41 +60,20 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.compresor
             return textoComp;//devuelve el texto comprimido junto con el diccionario usado para la compresion
         }
 
-        private List<Letra> ordenarListas(List<string> listaCarctrs, List<int> listaFrecs)//ordena las listas
+        private List<Letra> ordenarListas(List<string> listaCarctrs, List<int> listaFrecs)//retorna una secuencia ordenada
         {
-            string caracter;
-            int frecuencia;
-            List<Letra> diccFrecuencia = new List<Letra>();
-            List<string> listaCarOrd = new List<string>();
-            List<int> listaFrecsOrd = new List<int>();
+            List<Letra> listaFrecOrd = new List<Letra>();
+            var diccionario = new Dictionary<string, int>();
 
-            for (int i = 0; i < listaCarctrs.Count; i++)//itera sobre las listas para ordenarlas
-            {
-                caracter = listaCarctrs[i];
-                frecuencia = listaFrecs[i];
-                if (!listaCarOrd.Contains(caracter))
-                {
-                    for (int j = 0; j < listaCarctrs.Count; j++)
-                    {
-                        if (!listaCarOrd.Contains(caracter))
-                        {
-                            if (frecuencia > listaFrecs[j])
-                            {
-                                caracter = listaCarctrs[j];
-                                frecuencia = listaFrecs[j];
-                            }
-                        }
-                    }
-                    listaCarOrd.Add(caracter);
-                    listaFrecsOrd.Add(frecuencia);
-                }
-            }
-            for (int i = 0; i < listaCarctrs.Count; i++)
-            {
-                diccFrecuencia.Add(new Letra(listaCarOrd[i], listaFrecsOrd[i]));
-            }
+            for (int i = 0; i < listaCarctrs.Count; i++) diccionario.Add(listaCarctrs[i], listaFrecs[i]);//itera sobre las listas para ordenarlas
+           
+            var diccFrecuencias = from par in diccionario
+                        orderby par.Value ascending
+                        select par;
 
-            return diccFrecuencia;
+            foreach(var temp in diccFrecuencias)listaFrecOrd.Add(new Letra(temp.Key,temp.Value));
+
+            return listaFrecOrd;
         }
     }
 }
