@@ -17,26 +17,37 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.arbol
         public List<Letra> generarDiccionario(List<Letra> diccFrecuencia){
             Nodo auxIzq, raizTemp;
             raizTemp = new Nodo();
-            string binario = "";
-            List<Letra> diccBinario = new List<Letra>();
+            bool fin = false;
+            List<Letra> diccHuffman = new List<Letra>();
 
-            foreach (Letra letraTemp in diccFrecuencia)     //Crea el Arbol
+            foreach (Letra letraTemp in diccFrecuencia)         //Crea el Arbol
             {
                 auxIzq = new Nodo(letraTemp);
-                if (raiz == null) { raiz = auxIzq; }else{   //verifica si la raiz es null
+                if (raiz == null) { raiz = auxIzq; }else{       //verifica si la raiz es null
                     raizTemp.derecho = raiz;
                     raizTemp.izquierdo = auxIzq;
-                    raizTemp.setNodoPadre();                //hace que la letra dentro de la raiz temporal sea una suma de las letras que contienen sus hijos
-                    raiz = raizTemp;                        //mueve la antigua raiz abajo de la nueva que es una suma de sus dos hijos
+                    raizTemp.setPrimoIzq(raizTemp.izquierdo);
+                    raizTemp.setNodoPadre();                    //hace que la letra dentro de la raiz temporal sea una suma de las letras que contienen sus hijos
+                    raiz = raizTemp;                            //mueve la antigua raiz abajo de la nueva que es una suma de sus dos hijos
                 }
             }
 
-            foreach (Letra letraTemp in diccFrecuencia)     //Busca en el arbol los nuevos valores binarios de cada letra
+            if (raiz != null)
             {
-
+                raizTemp = raiz.getUltimoDerecho();             //Pide la hoja derecha del nodo actual o en su defecto el mismo
+                while (!fin)
+                {
+                    diccHuffman.Add(raizTemp.letra);            //Annade la Letra con su valor binario a la lista diccHuffman
+                    if (raizTemp.primoIzq != null)
+                    {
+                        raizTemp = raizTemp.primoIzq;
+                    }else{
+                        fin = true;
+                    }
+                }
             }
 
-            return diccBinario;
+            return diccHuffman;
         }
     }
 }
