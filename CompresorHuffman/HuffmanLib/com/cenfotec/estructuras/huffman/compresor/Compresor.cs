@@ -7,22 +7,23 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.compresor
 {
     public class Compresor
     {
-        public Arbol arbol;
+        private Arbol arbol;
 
         public Compresor()
         {
             arbol = new Arbol();
         }
 
-        public string comprimir(string texto){
+        public string comprimir(string texto)
+        {
             List<Letra> diccFrecuencia;
-            List<Letra> diccHuffman;
+            Dictionary<string, string> diccHuffman;
             List<string> listaCarctrs = new List<string>();
             List<int> listaFrecs = new List<int>();
 
-            foreach (char carctr in texto)
+            foreach (char carctr in texto)//se encarga de calcular la frecuencia de cada caracter en el texto y lo ingresa en dos listas
             {
-                if (listaCarctrs.Contains(carctr+""))
+                if (listaCarctrs.Contains(carctr + ""))
                 {
                     listaFrecs[listaCarctrs.IndexOf(carctr + "")]++;
                 }
@@ -32,21 +33,34 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.compresor
                     listaFrecs.Add(1);
                 }
             }
-            diccFrecuencia = ordenarListas(listaCarctrs, listaFrecs);
+            diccFrecuencia = ordenarListas(listaCarctrs, listaFrecs);//ordena las listas de frecuencia en orden ascendente y devuelve una lista de Letras
 
-            diccHuffman = arbol.generarDiccionario(diccFrecuencia);
+            diccHuffman = arbol.generarDiccionario(diccFrecuencia);//envia al arbol la lista de frecuencias y devuelve un diccionario con los valores en bits de cada caracter
 
 
 
-            return convertirTexto(diccHuffman,texto);
+            return convertirTexto(diccHuffman, texto);
         }
 
-        private string convertirTexto(List<Letra> diccHuffman, string texto)
+        private string convertirTexto(Dictionary<string, string> diccHuffman, string texto)//convierte el texto en una serie de bits utilizando el diccionario proporcionado
         {
-            throw new NotImplementedException();
+            string textoComp = "";
+            foreach (char carctr in texto)//agrega el texto comprimido al string textoComp
+            {
+                textoComp += diccHuffman[carctr+""];
+            }
+
+            textoComp += "/";//divide el texto comprimido y el diccionario con /
+
+            foreach (KeyValuePair<string,string> temp in diccHuffman)//agrega el diccionario al string textoComp
+            {
+                textoComp += temp.Key+":"+temp.Value+",";
+            }
+
+            return textoComp;//devuelve el texto comprimido junto con el diccionario usado para la compresion
         }
 
-        private List<Letra> ordenarListas(List<string> listaCarctrs, List<int> listaFrecs)
+        private List<Letra> ordenarListas(List<string> listaCarctrs, List<int> listaFrecs)//ordena las listas
         {
             string caracter;
             int frecuencia;
@@ -54,10 +68,10 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.compresor
             List<string> listaCarOrd = new List<string>();
             List<int> listaFrecsOrd = new List<int>();
 
-            for (int i = 0; i < listaCarctrs.Count;i++)
+            for (int i = 0; i < listaCarctrs.Count; i++)//itera sobre las listas para ordenarlas
             {
-                    caracter = listaCarctrs[i];
-                    frecuencia = listaFrecs[i];
+                caracter = listaCarctrs[i];
+                frecuencia = listaFrecs[i];
                 if (!listaCarOrd.Contains(caracter))
                 {
                     for (int j = 0; j < listaCarctrs.Count; j++)

@@ -6,7 +6,7 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.arbol
 {
     public class Arbol
     {
-        public Nodo raiz { get; set; }
+        private Nodo raiz { get; set; }
 
         public Arbol()
         {
@@ -14,12 +14,12 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.arbol
             raiz = null;
         }
 
-        public List<Letra> generarDiccionario(List<Letra> diccFrecuencia)
+        public Dictionary<string, string> generarDiccionario(List<Letra> diccFrecuencia)
         {
             Nodo auxIzq, raizTemp;
             raizTemp = new Nodo();
             bool fin = false;
-            List<Letra> diccHuffman = new List<Letra>();
+            Dictionary<string,string> diccHuffman = new Dictionary<string,string>();
 
             foreach (Letra letraTemp in diccFrecuencia)         //Crea el Arbol
             {
@@ -40,7 +40,7 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.arbol
                 raizTemp = raiz.getUltimoDerecho();             //Pide la hoja derecha del nodo actual o en su defecto el mismo
                 while (!fin)
                 {
-                    diccHuffman.Add(raizTemp.letra);            //Annade la Letra con su valor binario a la lista diccHuffman
+                    diccHuffman.Add(raizTemp.letra.letras,raizTemp.letra.binario);            //Annade la Letra con su valor binario a la lista diccHuffman
                     if (raizTemp.primoIzq != null)
                     {
                         raizTemp = raizTemp.primoIzq;
