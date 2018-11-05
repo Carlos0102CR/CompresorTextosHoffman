@@ -14,7 +14,8 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.arbol
             raiz = null;
         }
 
-        public List<Letra> generarDiccionario(List<Letra> diccFrecuencia){
+        public List<Letra> generarDiccionario(List<Letra> diccFrecuencia)
+        {
             Nodo auxIzq, raizTemp;
             raizTemp = new Nodo();
             bool fin = false;
@@ -23,7 +24,9 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.arbol
             foreach (Letra letraTemp in diccFrecuencia)         //Crea el Arbol
             {
                 auxIzq = new Nodo(letraTemp);
-                if (raiz == null) { raiz = auxIzq; }else{       //verifica si la raiz es null
+                if (raiz == null) { raiz = auxIzq; }            //verifica si la raiz es null
+                else
+                {       
                     raizTemp.derecho = raiz;
                     raizTemp.izquierdo = auxIzq;
                     raizTemp.setPrimoIzq(raizTemp.izquierdo);
@@ -41,7 +44,9 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.arbol
                     if (raizTemp.primoIzq != null)
                     {
                         raizTemp = raizTemp.primoIzq;
-                    }else{
+                    }
+                    else
+                    {
                         fin = true;
                     }
                 }

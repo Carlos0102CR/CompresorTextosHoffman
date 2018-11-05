@@ -34,9 +34,16 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.compresor
             }
             diccFrecuencia = ordenarListas(listaCarctrs, listaFrecs);
 
-            diccHuffman = arbol.generarDiccionario();
+            diccHuffman = arbol.generarDiccionario(diccFrecuencia);
 
-            return "";
+
+
+            return convertirTexto(diccHuffman,texto);
+        }
+
+        private string convertirTexto(List<Letra> diccHuffman, string texto)
+        {
+            throw new NotImplementedException();
         }
 
         private List<Letra> ordenarListas(List<string> listaCarctrs, List<int> listaFrecs)

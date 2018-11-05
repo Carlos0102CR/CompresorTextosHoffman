@@ -25,7 +25,7 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.nodo
             this.letra = new Letra(izquierdo.letra.letras + derecho.letra.letras, izquierdo.letra.frecuencia + derecho.letra.frecuencia);
         }
 
-        public void setCodigoHuff(string binario)
+        public void setCodigoHuff(string binario)   //agrega el valor binario a la letra de este nodo y envia a sus hijos los suyos
         {
             this.letra.binario = binario;
             if (derecho!=null){
@@ -36,14 +36,14 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.nodo
             }
         }
 
-        public Nodo getUltimoDerecho(){
+        public Nodo getUltimoDerecho(){             //Devuelve el ultimo nodo derecho para mayor facilidad a la hora de crear el diccionario
             if(derecho!=null){
                 return derecho.getUltimoDerecho();
             }
             return this;
         }
 
-        public void setPrimoIzq(Nodo primoIzq){
+        public void setPrimoIzq(Nodo primoIzq){     //agrega el nodo enviado en el atributo de primo izquierdo para poder buscar en las hojas SOLO de Der-Izq
             Nodo hijoDer = this;
             if(derecho!=null){
                 derecho.setPrimoIzq(primoIzq);
