@@ -12,7 +12,7 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.gestor
             comp = new Compresor();
         }
 
-        public string imprimir(string texto){
+        public string comprimir(string texto){
             return comp.comprimir(texto);
         }
     }

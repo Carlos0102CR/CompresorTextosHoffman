@@ -47,7 +47,7 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.nodo
             Nodo hijoDer = this;
             if(derecho!=null){
                 derecho.setPrimoIzq(primoIzq);
-            }else if(primoIzq != null)
+            }else if(this.primoIzq != null)
             {
                 this.primoIzq.setPrimoIzq(primoIzq);
             }else{
