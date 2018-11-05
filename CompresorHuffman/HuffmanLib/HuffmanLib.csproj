@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="com\" />
+    <Folder Include="com\cenfotec\" />
+    <Folder Include="com\cenfotec\estructuras\" />
+    <Folder Include="com\cenfotec\estructuras\huffman\" />
+    <Folder Include="com\cenfotec\estructuras\huffman\arbol\" />
+    <Folder Include="com\cenfotec\estructuras\huffman\nodo\" />
+    <Folder Include="com\cenfotec\estructuras\huffman\compresor\" />
+    <Folder Include="com\cenfotec\estructuras\huffman\gestor\" />
+    <Folder Include="com\cenfotec\estructuras\huffman\letra\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+</Project>
