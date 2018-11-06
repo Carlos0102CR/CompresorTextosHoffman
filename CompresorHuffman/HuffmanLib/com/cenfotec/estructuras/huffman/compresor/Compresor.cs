@@ -35,9 +35,9 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.compresor
             }
             listaFrecuencia = ordenarListas(listaCarctrs, listaFrecs);//ordena las listas de frecuencia en orden ascendente y devuelve una lista de Letras
 
-            diccHuffman = arbol.generarDiccionario(listaFrecuencia);//envia al arbol la lista de frecuencias y devuelve un diccionario con los valores en bits de cada caracter
+            arbol.setFrecuencias(listaFrecuencia);//envia al arbol la lista de frecuencias y devuelve un diccionario con los valores en bits de cada caracter
 
-
+            diccHuffman = arbol.generarDiccionario();
 
             return convertirTexto(diccHuffman, texto);
         }

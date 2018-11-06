@@ -1,56 +1,68 @@
 ﻿using System.Collections.Generic;
 using HuffmanLib.com.cenfotec.estructuras.huffman.letra;
 using HuffmanLib.com.cenfotec.estructuras.huffman.nodo;
+using System.Linq;
 
 namespace HuffmanLib.com.cenfotec.estructuras.huffman.arbol
 {
     public class Arbol
     {
+        private List<Nodo> nodos = new List<Nodo>();
         private Nodo raiz { get; set; }
+        List<Letra> frecuencias;
 
         public Arbol()
         {
-
             raiz = null;
         }
 
-        public Dictionary<string, string> generarDiccionario(List<Letra> listaFrecuencia)
+        public void setFrecuencias(List<Letra> listaFrecuencias)
         {
-            Nodo auxIzq, raizTemp;
-            raizTemp = new Nodo();
-            bool fin = false;
-            Dictionary<string,string> diccHuffman = new Dictionary<string,string>();
+            frecuencias = listaFrecuencias;
+            construir();
+        }
+        private void construir()
+        {
 
-            foreach (Letra letraTemp in listaFrecuencia)        //Crea el Arbol
+            foreach (Letra letra in frecuencias)
             {
-                auxIzq = new Nodo(letraTemp);
-                if (raiz == null) { raiz = auxIzq; }            //verifica si la raiz es null
-                else
-                {       
-                    raizTemp.derecho = raiz;
-                    raizTemp.izquierdo = auxIzq;
-                    raizTemp.setPrimoIzq(raizTemp.izquierdo);
-                    raizTemp.setNodoPadre();                    //hace que la letra dentro de la raiz temporal sea una suma de las letras que contienen sus hijos
-                    raiz = raizTemp;                            //mueve la antigua raiz abajo de la nueva que es una suma de sus dos hijos
-                }
+                nodos.Add(new Nodo(letra));
             }
 
-            if (raiz != null)
+            while (nodos.Count > 1)
             {
-                raizTemp = raiz.getUltimoDerecho();             //Pide la hoja derecha del nodo actual o en su defecto el mismo
-                while (!fin)
+                List<Nodo> nodosOrdenados = nodos.OrderBy(nodo => nodo.letra.frecuencia).ToList<Nodo>();
+
+                if (nodosOrdenados.Count >= 2)
                 {
-                    diccHuffman.Add(raizTemp.letra.letras,raizTemp.letra.binario);            //Annade la Letra con su valor binario a la lista diccHuffman
-                    if (raizTemp.primoIzq != null)
+                    // toma primero 2 nodos
+                    List<Nodo> par = nodosOrdenados.Take(2).ToList<Nodo>();
+
+                    // Crea un padre de los nodos tomada sumando sus letras y frecuencias
+                    Nodo parent = new Nodo()
                     {
-                        raizTemp = raizTemp.primoIzq;
-                    }
-                    else
-                    {
-                        fin = true;
-                    }
+                        letra = new Letra(par[0].letra.letras + par[1].letra.letras, par[0].letra.frecuencia + par[1].letra.frecuencia),
+                        izquierdo = par[0],
+                        derecho = par[1]
+                    };
+
+                    nodos.Remove(par[0]);
+                    nodos.Remove(par[1]);
+                    nodos.Add(parent);
                 }
+
+                this.raiz = nodos.FirstOrDefault();
+
             }
+        }
+
+        public Dictionary<string, string> generarDiccionario()
+        {
+            List<Letra> test = new List<Letra>();
+            List<Letra> lista =  raiz.setCodigoHuff("", test);
+            Dictionary<string, string> diccHuffman = new Dictionary<string, string>();
+
+            foreach (Letra letra in lista) diccHuffman.Add(letra.letras, letra.binario);
 
             return diccHuffman;
         }

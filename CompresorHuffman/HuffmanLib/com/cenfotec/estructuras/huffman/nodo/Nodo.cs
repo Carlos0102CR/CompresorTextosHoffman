@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using HuffmanLib.com.cenfotec.estructuras.huffman.letra;
 
 namespace HuffmanLib.com.cenfotec.estructuras.huffman.nodo
@@ -6,7 +7,6 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.nodo
     public class Nodo
     {
         public Letra letra { get; set; }
-        public Nodo primoIzq { get; set; }
         public Nodo derecho { get; set; }
         public Nodo izquierdo { get; set; }
 
@@ -16,42 +16,47 @@ namespace HuffmanLib.com.cenfotec.estructuras.huffman.nodo
             izquierdo = null;
             letra = null;
         }
+
         public Nodo(Letra letra){
             this.letra = letra;
             derecho = null;
             izquierdo = null;
         }
-        public void setNodoPadre(){
-            this.letra = new Letra(izquierdo.letra.letras + derecho.letra.letras, izquierdo.letra.frecuencia + derecho.letra.frecuencia);
-        }
 
-        public void setCodigoHuff(string binario)   //agrega el valor binario a la letra de este nodo y envia a sus hijos los suyos
+        public List<Letra> setCodigoHuff(string binario,List<Letra> binarios)   //agrega el valor binario a la letra de este nodo y envia a sus hijos los suyos
         {
             this.letra.binario = binario;
-            if (derecho!=null){
-                derecho.setCodigoHuff(binario+"1");
-            }
-            if(izquierdo!=null){
-                izquierdo.setCodigoHuff(binario + "0");
-            }
-        }
-
-        public Nodo getUltimoDerecho(){             //Devuelve el ultimo nodo derecho para mayor facilidad a la hora de crear el diccionario
-            if(derecho!=null){
-                return derecho.getUltimoDerecho();
-            }
-            return this;
-        }
-
-        public void setPrimoIzq(Nodo primoIzq){     //agrega el nodo enviado en el atributo de primo izquierdo para poder buscar en las hojas SOLO de Der-Izq
-            Nodo hijoDer = this;
-            if(derecho!=null){
-                derecho.setPrimoIzq(primoIzq);
-            }else if(this.primoIzq != null)
-            {
-                this.primoIzq.setPrimoIzq(primoIzq);
+            if (esHoja(this)) {
+                binarios.Add(this.letra);
+                return binarios;
             }else{
-                this.primoIzq = primoIzq;
+
+                if (derecho != null)
+                {
+                    List<Letra> caminoDer = new List<Letra>();
+                    caminoDer.AddRange(binarios);
+
+                    binarios = derecho.setCodigoHuff(binario + "1", caminoDer);
+
+                }
+                if (izquierdo != null)
+                {
+                    List<Letra> caminoIzq = new List<Letra>();
+                    caminoIzq.AddRange(binarios);
+
+                    binarios = izquierdo.setCodigoHuff(binario + "0", caminoIzq);
+                }
+                    return binarios;
+            }
+        }
+
+
+        private bool esHoja(Nodo nodo)
+        {
+            if(nodo.izquierdo == null && nodo.derecho == null){
+                return true;
+            }else{
+                return false;
             }
         }
 
